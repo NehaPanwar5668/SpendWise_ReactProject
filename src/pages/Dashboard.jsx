@@ -13,14 +13,19 @@ import SpendingChart from "../components/SpendingChart";
 import CategoryChart from "../components/CategoryChart";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
+import IncomeForm from "../components/IncomeForm";
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
+  const [income, setIncome] = useState([]);
   const totalExpenses = expenses.reduce(
   (total, expense) => total + Number(expense.amount),
   0
 );
-const totalIncome = 75000;
+const totalIncome = income.reduce(
+  (total, item) => total + Number(item.amount),
+  0
+);
 const totalBalance = totalIncome - totalExpenses;
 
   const addExpense = (expense) => {
@@ -37,6 +42,15 @@ const totalBalance = totalIncome - totalExpenses;
       prevExpenses.filter((expense) => expense.id !== id)
     );
   };
+  const addIncome = (newIncome) => {
+  setIncome((prevIncome) => [
+    ...prevIncome,
+    {
+      ...newIncome,
+      id: Date.now(),
+    },
+  ]);
+};
 
   return (
     <div>
@@ -63,7 +77,7 @@ const totalBalance = totalIncome - totalExpenses;
 
         <StatCard
           title="Total Income"
-          amount={75000}
+          amount={totalIncome}
           icon={TrendingUp}
           iconBg="bg-blue-100"
           iconColor="text-blue-600"
@@ -93,6 +107,9 @@ const totalBalance = totalIncome - totalExpenses;
       <div className="mt-6">
         <ExpenseForm onAddExpense={addExpense} />
       </div>
+        <div className="mt-6">
+       <IncomeForm onAddIncome={addIncome} />
+        </div>
 
 
       <div className="mt-6">
