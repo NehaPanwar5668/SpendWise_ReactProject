@@ -14,19 +14,20 @@ import CategoryChart from "../components/CategoryChart";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import IncomeForm from "../components/IncomeForm";
+import IncomeList from "../components/IncomeList";
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
   const [income, setIncome] = useState([]);
   const totalExpenses = expenses.reduce(
-  (total, expense) => total + Number(expense.amount),
-  0
-);
-const totalIncome = income.reduce(
-  (total, item) => total + Number(item.amount),
-  0
-);
-const totalBalance = totalIncome - totalExpenses;
+    (total, expense) => total + Number(expense.amount),
+    0
+  );
+  const totalIncome = income.reduce(
+    (total, item) => total + Number(item.amount),
+    0
+  );
+  const totalBalance = totalIncome - totalExpenses;
 
   const addExpense = (expense) => {
     setExpenses((prevExpenses) => [
@@ -43,14 +44,21 @@ const totalBalance = totalIncome - totalExpenses;
     );
   };
   const addIncome = (newIncome) => {
-  setIncome((prevIncome) => [
-    ...prevIncome,
-    {
-      ...newIncome,
-      id: Date.now(),
-    },
-  ]);
-};
+    setIncome((prevIncome) => [
+      ...prevIncome,
+      {
+        ...newIncome,
+        id: crypto.randomUUID(),
+      },
+    ]);
+  };
+  const deleteIncome = (id) => {
+    setIncome((prevIncome) =>
+      prevIncome.filter((item) => item.id !== id)
+    );
+  };
+
+  const totalSavings = totalIncome - totalExpenses;
 
   return (
     <div>
@@ -95,7 +103,7 @@ const totalBalance = totalIncome - totalExpenses;
 
         <StatCard
           title="Total Savings"
-          amount={58450}
+          amount={totalSavings}
           icon={PiggyBank}
           iconBg="bg-purple-100"
           iconColor="text-purple-600"
@@ -104,12 +112,18 @@ const totalBalance = totalIncome - totalExpenses;
 
       </div>
 
-      <div className="mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <ExpenseForm onAddExpense={addExpense} />
+
+        <IncomeForm onAddIncome={addIncome} />
       </div>
-        <div className="mt-6">
-       <IncomeForm onAddIncome={addIncome} />
-        </div>
+
+      <div className="mt-6">
+        <IncomeList
+          income={income}
+          onDeleteIncome={deleteIncome}
+        />
+      </div>
 
 
       <div className="mt-6">
