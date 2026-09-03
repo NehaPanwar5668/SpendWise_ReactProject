@@ -33,7 +33,11 @@ function ExpenseList({ expenses, onDeleteExpense }) {
                                 </p>
 
                                 <button
-                                    onClick={() => onDeleteExpense(expense.id)}
+                                    onClick={() => {
+                                        if (window.confirm("Are you sure you want to delete this expense?")) {
+                                            onDeleteExpense(expense.id);
+                                        }
+                                    }}
                                     className="text-red-500 hover:text-red-700"
                                 >
                                     <Trash2 size={18} />

@@ -47,8 +47,9 @@ function Dashboard() {
     setIncome((prevIncome) => [
       ...prevIncome,
       {
-        ...newIncome,
-        id: crypto.randomUUID(),
+      ...expense,
+      id: crypto.randomUUID(),
+      date: new Date().toLocaleDateString("en-IN"),
       },
     ]);
   };
