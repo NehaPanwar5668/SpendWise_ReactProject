@@ -5,15 +5,41 @@ import {
   PiggyBank,
 } from "lucide-react";
 
+import { useState } from "react";
+
 import StatCard from "../components/StatCard";
 import TransactionTable from "../components/TransactionTable";
 import SpendingChart from "../components/SpendingChart";
 import CategoryChart from "../components/CategoryChart";
+import ExpenseForm from "../components/ExpenseForm";
+import ExpenseList from "../components/ExpenseList";
 
 function Dashboard() {
+  const [expenses, setExpenses] = useState([]);
+  const totalExpenses = expenses.reduce(
+  (total, expense) => total + Number(expense.amount),
+  0
+);
+const totalIncome = 75000;
+const totalBalance = totalIncome - totalExpenses;
+
+  const addExpense = (expense) => {
+    setExpenses((prevExpenses) => [
+      ...prevExpenses,
+      {
+        ...expense,
+        id: Date.now(),
+      },
+    ]);
+  };
+  const deleteExpense = (id) => {
+    setExpenses((prevExpenses) =>
+      prevExpenses.filter((expense) => expense.id !== id)
+    );
+  };
+
   return (
     <div>
-      
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-900">
           Financial Overview
@@ -24,12 +50,11 @@ function Dashboard() {
         </p>
       </div>
 
-      
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
 
         <StatCard
           title="Total Balance"
-          amount={58450}
+          amount={totalBalance}
           icon={Wallet}
           iconBg="bg-emerald-100"
           iconColor="text-emerald-600"
@@ -47,7 +72,7 @@ function Dashboard() {
 
         <StatCard
           title="Total Expenses"
-          amount={16550}
+          amount={totalExpenses}
           icon={TrendingDown}
           iconBg="bg-red-100"
           iconColor="text-red-600"
@@ -63,19 +88,32 @@ function Dashboard() {
           change="15.3% this month"
         />
 
-        <div className="mt-6">
-       <TransactionTable />
-        </div>
-
-        <div className="mt-6">
-        <SpendingChart />
-        </div>
-
-        <div className="grid grid-cols-1 xl:grid-cols-1 gap-6 mt-6">
-           <CategoryChart />
-           </div>
-
       </div>
+
+      <div className="mt-6">
+        <ExpenseForm onAddExpense={addExpense} />
+      </div>
+
+
+      <div className="mt-6">
+        <ExpenseList
+          expenses={expenses}
+          onDeleteExpense={deleteExpense}
+        />
+      </div>
+
+      <div className="mt-6">
+        <TransactionTable />
+      </div>
+
+      <div className="mt-6">
+        <SpendingChart />
+      </div>
+
+      <div className="mt-6">
+        <CategoryChart />
+      </div>
+
     </div>
   );
 }
