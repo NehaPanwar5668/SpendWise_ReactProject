@@ -8,6 +8,7 @@ import {
 import StatCard from "../components/StatCard";
 import TransactionTable from "../components/TransactionTable";
 import SpendingChart from "../components/SpendingChart";
+import CategoryChart from "../components/CategoryChart";
 
 function Dashboard() {
   return (
@@ -69,6 +70,10 @@ function Dashboard() {
         <div className="mt-6">
         <SpendingChart />
         </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-1 gap-6 mt-6">
+           <CategoryChart />
+           </div>
 
       </div>
     </div>
