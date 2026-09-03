@@ -6,6 +6,8 @@ import {
 } from "lucide-react";
 
 import StatCard from "../components/StatCard";
+import TransactionTable from "../components/TransactionTable";
+import SpendingChart from "../components/SpendingChart";
 
 function Dashboard() {
   return (
@@ -59,6 +61,14 @@ function Dashboard() {
           iconColor="text-purple-600"
           change="15.3% this month"
         />
+
+        <div className="mt-6">
+       <TransactionTable />
+        </div>
+
+        <div className="mt-6">
+        <SpendingChart />
+        </div>
 
       </div>
     </div>
